@@ -1,75 +1,71 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- CSP для базовой защиты -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://free.churchless.tech; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://free.churchless.tech;">
-  <title>Помощник по ДЗ</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощник по ДЗ</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Регистрационная форма (если данные не сохранены) -->
-  <div id="initForm" class="init-form">
-    <h2>Добро пожаловать!</h2>
-    <form id="userDetailsForm">
-      <label for="userName">Ваше имя:</label>
-      <input type="text" id="userName" name="userName" placeholder="Введите имя" required>
-      
-      <label for="userClass">Ваш класс:</label>
-      <select id="userClass" name="userClass" required>
-        <option value="">Выберите класс</option>
-        <option value="1">1 класс</option>
-        <option value="2">2 класс</option>
-        <option value="3">3 класс</option>
-        <option value="4">4 класс</option>
-        <option value="5">5 класс</option>
-        <option value="6">6 класс</option>
-        <option value="7">7 класс</option>
-        <option value="8">8 класс</option>
-        <option value="9">9 класс</option>
-        <option value="10">10 класс</option>
-        <option value="11">11 класс</option>
-        <option value="12">12 класс</option>
-      </select>
-      
-      <button type="submit">Начать</button>
-    </form>
-  </div>
 
-  <!-- Основной интерфейс, появляется после регистрации -->
-  <div id="mainInterface" style="display:none;">
+    <!-- Верхняя панель -->
     <header>
-      <div class="top-bar">
-        <button id="premiumBtn" onclick="openPremium()">💎 Премиум</button>
-        <button id="settingsBtn" onclick="openSettings()">⚙️ Настройки</button>
-      </div>
-      <h1>Помощник по ДЗ</h1>
-      <p>Здравствуйте, <span id="displayUserName"></span>! Готовы начать?</p>
+        <h1>Помощник по ДЗ</h1>
+        <div class="top-buttons">
+            <button id="settings-btn">⚙ Настройки</button>
+            <button id="premium-btn">💎 Премиум</button>
+        </div>
     </header>
 
+    <!-- Регистрация -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <h2>Введите данные</h2>
+            <input type="text" id="name" placeholder="Ваше имя">
+            <select id="class">
+                <option value="" disabled selected>Выберите класс</option>
+                <option value="1">1 класс</option>
+                <option value="2">2 класс</option>
+                <option value="3">3 класс</option>
+                <option value="4">4 класс</option>
+                <option value="5">5 класс</option>
+                <option value="6">6 класс</option>
+                <option value="7">7 класс</option>
+                <option value="8">8 класс</option>
+                <option value="9">9 класс</option>
+                <option value="10">10 класс</option>
+                <option value="11">11 класс</option>
+                <option value="12">12 класс</option>
+            </select>
+            <select id="country">
+                <option value="" disabled selected>Выберите страну</option>
+                <option value="Казахстан">Казахстан</option>
+                <option value="Россия">Россия</option>
+                <option value="Беларусь">Беларусь</option>
+                <option value="Украина">Украина</option>
+            </select>
+            <button id="start-btn">Начать</button>
+        </div>
+    </div>
+
+    <!-- Основной интерфейс -->
     <main>
-      <div class="input-section">
-        <!-- Поле ввода с автосохранением, при вводе сразу генерируется ответ -->
-        <input type="text" id="userInput" placeholder="Введите задание..." oninput="generateAnswer()">
-        <!-- Красивая кнопка для загрузки фото, позволяющая снимать фото и выбирать из галереи -->
-        <label for="fileUpload" class="file-btn">📸 Камера</label>
-        <input type="file" id="fileUpload" accept="image/*" capture="environment" onchange="uploadPhoto()">
-      </div>
-      <div class="answer-section">
-        <h2>Ответ:</h2>
-        <p id="answerText">Введите задание или загрузите фото</p>
-      </div>
+        <textarea id="task-input" placeholder="Введите задание"></textarea>
+        <div class="buttons">
+            <button id="camera-btn">📸 Камера</button>
+            <input type="file" id="file-input" accept="image/*">
+            <button id="send-btn">Отправить</button>
+        </div>
+        <div id="answer-container" class="hidden"></div>
     </main>
 
+    <!-- Футер -->
     <footer>
-      <button onclick="quickCopy()">⚡ Быстро списать</button>
-      <button onclick="generateMistakes()">🎭 Режим с ошибками</button>
-      <button onclick="openConsp()">📝 Конспект</button>
+        <button id="copy-btn">⚡ Быстро списать</button>
+        <button id="mistake-btn">🎭 Режим с ошибками</button>
+        <button id="summary-btn">📝 Конспект</button>
     </footer>
-  </div>
 
-  <script src="config.js"></script>
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
