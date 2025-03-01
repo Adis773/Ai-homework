@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <!-- Метатеги для адаптивности и защиты -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Content Security Policy для защиты от XSS -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://free.churchless.tech; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://free.churchless.tech;">
+  <title>AI Homework – Решебник для школьников</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Регистрационная форма -->
+  <div id="initForm" class="init-form">
+    <h2>Добро пожаловать!</h2>
+    <form id="userDetailsForm">
+      <label for="userName">Ваше имя:</label>
+      <input type="text" id="userName" name="userName" placeholder="Введите имя" required>
+      
+      <label for="userClass">Ваш класс:</label>
+      <select id="userClass" name="userClass" required>
+        <option value="">Выберите класс</option>
+        <!-- Классы от 1 до 12 -->
+        <option value="1">1 класс</option>
+        <option value="2">2 класс</option>
+        <option value="3">3 класс</option>
+        <option value="4">4 класс</option>
+        <option value="5">5 класс</option>
+        <option value="6">6 класс</option>
+        <option value="7">7 класс</option>
+        <option value="8">8 класс</option>
+        <option value="9">9 класс</option>
+        <option value="10">10 класс</option>
+        <option value="11">11 класс</option>
+        <option value="12">12 класс</option>
+      </select>
+      
+      <button type="submit">Начать</button>
+    </form>
+  </div>
+
+  <!-- Основной интерфейс: появляется после регистрации -->
+  <div id="mainInterface" style="display:none;">
+    <header>
+      <div class="top-bar">
+        <button id="premiumBtn" onclick="showPremium()">💎 Премиум</button>
+        <button id="settingsBtn" onclick="openSettings()">⚙️ Настройки</button>
+      </div>
+      <h1>AI Homework</h1>
+      <p>Здравствуйте, <span id="displayUserName"></span>! Готовы начать?</p>
+    </header>
+
+    <main>
+      <div class="input-area">
+        <textarea id="userQuery" placeholder="Введите запрос или задание..."></textarea>
+        <!-- Возможность загрузки фото с камеры (атрибут capture позволяет сразу фотографировать) -->
+        <input type="file" id="photoInput" accept="image/*" capture="environment">
+        <div class="style-select">
+          <label>Стиль ответа:</label>
+          <select id="styleSelect">
+            <option value="excellent">Отличник (без ошибок)</option>
+            <option value="average">Обычный ученик</option>
+            <option value="lazy">Халявщик (с ошибками)</option>
+            <option value="abstract">Конспект</option>
+          </select>
+        </div>
+        <button id="sendBtn" onclick="sendRequest()">Отправить</button>
+      </div>
+      <div id="responseArea" class="response-area">
+        <h2>Ответ от ИИ:</h2>
+        <div id="responseContent"></div>
+      </div>
+    </main>
+
+    <footer>
+      <button onclick="quickCopy()">⚡ Быстро списать</button>
+      <button onclick="generateMistakes()">🎭 Режим с ошибками</button>
+      <button onclick="showConsp()">📝 Конспект</button>
+    </footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
