@@ -2,16 +2,14 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <!-- Метатеги для адаптивности и защиты -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Content Security Policy для защиты от XSS -->
+  <!-- CSP для базовой защиты -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://free.churchless.tech; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://free.churchless.tech;">
-  <title>AI Homework – Решебник для школьников</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+  <title>Помощник по ДЗ</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Регистрационная форма -->
+  <!-- Регистрационная форма (если данные не сохранены) -->
   <div id="initForm" class="init-form">
     <h2>Добро пожаловать!</h2>
     <form id="userDetailsForm">
@@ -21,7 +19,6 @@
       <label for="userClass">Ваш класс:</label>
       <select id="userClass" name="userClass" required>
         <option value="">Выберите класс</option>
-        <!-- Классы от 1 до 12 -->
         <option value="1">1 класс</option>
         <option value="2">2 класс</option>
         <option value="3">3 класс</option>
@@ -40,43 +37,35 @@
     </form>
   </div>
 
-  <!-- Основной интерфейс: появляется после регистрации -->
+  <!-- Основной интерфейс, появляется после регистрации -->
   <div id="mainInterface" style="display:none;">
     <header>
       <div class="top-bar">
-        <button id="premiumBtn" onclick="showPremium()">💎 Премиум</button>
+        <button id="premiumBtn" onclick="openPremium()">💎 Премиум</button>
         <button id="settingsBtn" onclick="openSettings()">⚙️ Настройки</button>
       </div>
-      <h1>AI Homework</h1>
+      <h1>Помощник по ДЗ</h1>
       <p>Здравствуйте, <span id="displayUserName"></span>! Готовы начать?</p>
     </header>
 
     <main>
-      <div class="input-area">
-        <textarea id="userQuery" placeholder="Введите запрос или задание..."></textarea>
-        <!-- Возможность загрузки фото с камеры (атрибут capture позволяет сразу фотографировать) -->
-        <input type="file" id="photoInput" accept="image/*" capture="environment">
-        <div class="style-select">
-          <label>Стиль ответа:</label>
-          <select id="styleSelect">
-            <option value="excellent">Отличник (без ошибок)</option>
-            <option value="average">Обычный ученик</option>
-            <option value="lazy">Халявщик (с ошибками)</option>
-            <option value="abstract">Конспект</option>
-          </select>
-        </div>
-        <button id="sendBtn" onclick="sendRequest()">Отправить</button>
+      <div class="input-section">
+        <!-- Поле ввода с автосохранением, при вводе сразу генерируется ответ -->
+        <input type="text" id="userInput" placeholder="Введите задание..." oninput="generateAnswer()">
+        <!-- Красивая кнопка для загрузки фото, позволяющая снимать фото и выбирать из галереи -->
+        <label for="fileUpload" class="file-btn">📸 Камера</label>
+        <input type="file" id="fileUpload" accept="image/*" capture="environment" onchange="uploadPhoto()">
       </div>
-      <div id="responseArea" class="response-area">
-        <h2>Ответ от ИИ:</h2>
-        <div id="responseContent"></div>
+      <div class="answer-section">
+        <h2>Ответ:</h2>
+        <p id="answerText">Введите задание или загрузите фото</p>
       </div>
     </main>
 
     <footer>
       <button onclick="quickCopy()">⚡ Быстро списать</button>
       <button onclick="generateMistakes()">🎭 Режим с ошибками</button>
-      <button onclick="showConsp()">📝 Конспект</button>
+      <button onclick="openConsp()">📝 Конспект</button>
     </footer>
   </div>
 
