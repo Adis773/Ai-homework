@@ -1,12 +1,9 @@
-// Основной скрипт: обработка регистрации, формирование запроса, вызовы API и управление виджетами
-
-// Обработка регистрации пользователя: сохраняем имя и класс
+// Автосохранение регистрационных данных и переключение интерфейса
 document.getElementById("userDetailsForm").addEventListener("submit", function(e) {
   e.preventDefault();
   const name = document.getElementById("userName").value.trim();
   const userClass = document.getElementById("userClass").value;
   if (!name || !userClass) return;
-  // Дополнительно можно добавить валидацию (например, проверку специальных символов)
   localStorage.setItem("userName", name);
   localStorage.setItem("userClass", userClass);
   document.getElementById("displayUserName").innerText = name;
@@ -14,106 +11,63 @@ document.getElementById("userDetailsForm").addEventListener("submit", function(e
   document.getElementById("mainInterface").style.display = "block";
 });
 
-// Обработка выбора фото
-document.getElementById("photoInput").addEventListener("change", function(e) {
-  console.log("Фото выбрано:", e.target.files[0]);
-});
+// Автоматическая генерация ответа при вводе текста
+function generateAnswer() {
+  let input = document.getElementById("userInput").value;
+  let answerText = document.getElementById("answerText");
 
-// Функция отправки запроса с учетом введенных данных
-function sendRequest() {
-  const query = document.getElementById("userQuery").value.trim();
-  const style = document.getElementById("styleSelect").value;
-  const photoInput = document.getElementById("photoInput");
-  const userName = localStorage.getItem("userName") || "Ученик";
-  const userClass = localStorage.getItem("userClass") || "";
-  
-  // Формируем базовый prompt с персонализацией
-  let basePrompt = `Ты помощник для школьника. Ученик по имени ${userName} учится в ${userClass} классе. Помоги решить задание: `;
-  if (query) basePrompt += "Вопрос: " + query;
-  
-  // Если есть фото, отправляем его для OCR, иначе сразу вызываем ChatGPT
-  if (photoInput.files.length > 0) {
-    let formData = new FormData();
-    formData.append("photo", photoInput.files[0]);
-    fetch("/photo", {
-      method: "POST",
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-      let combinedPrompt = basePrompt + "\nРаспознанный текст с фото: " + data.text;
-      let modifiedPrompt = modifyPromptByStyle(combinedPrompt, style);
-      callChatGPT(modifiedPrompt);
-    })
-    .catch(err => {
-      console.error("Ошибка OCR:", err);
-      callChatGPT(basePrompt);
-    });
+  if (input.trim() !== "") {
+    answerText.innerHTML = "Обработка...";
+    // Имитация быстрого ответа через задержку (в реале вызов API)
+    setTimeout(() => {
+      // Пример: ответ генерируется на основе введенного текста (можно заменить на вызов ChatGPT)
+      answerText.innerHTML = "Ответ: " + input.split("").reverse().join("");
+    }, 1000);
   } else {
-    let modifiedPrompt = modifyPromptByStyle(basePrompt, style);
-    callChatGPT(modifiedPrompt);
+    answerText.innerHTML = "Введите задание или загрузите фото";
   }
 }
 
-// Функция вызова ChatGPT API (через модуль api/chatgpt.js)
-function callChatGPT(promptText) {
-  chatGPT(promptText)
-    .then(responseText => {
-      document.getElementById("responseContent").innerText = responseText;
-    })
-    .catch(err => {
-      console.error("Ошибка ChatGPT:", err);
-      document.getElementById("responseContent").innerText = "Ошибка получения ответа.";
-    });
-}
+// Обработка загрузки фото (загрузка с камеры или галереи)
+function uploadPhoto() {
+  let fileInput = document.getElementById("fileUpload");
+  let answerText = document.getElementById("answerText");
 
-// Функция модификации запроса по выбранному стилю
-function modifyPromptByStyle(promptText, style) {
-  switch (style) {
-    case "excellent":
-      return "Отвечай подробно и правильно, как настоящий отличник. " + promptText;
-    case "average":
-      return "Дай понятный и точный ответ: " + promptText;
-    case "lazy":
-      return "Дай быстрый ответ, можно с незначительными ошибками: " + promptText;
-    case "abstract":
-      return "Сделай краткий конспект по теме: " + promptText;
-    default:
-      return promptText;
+  if (fileInput.files.length > 0) {
+    answerText.innerHTML = "Фото загружено, обработка...";
+    // Здесь можно вызвать OCR API. Для демонстрации используем задержку.
+    setTimeout(() => {
+      answerText.innerHTML = "Ответ: (ИИ анализирует фото и формирует ответ)";
+    }, 2000);
   }
 }
 
-// Функция для открытия настроек (смена языка, темы)
+// Настройки и премиум
 function openSettings() {
-  let lang = prompt("Введите язык интерфейса (ru, en, kk и т.д.):", "ru");
-  if (lang) {
-    localStorage.setItem("appLang", lang);
-    alert("Язык изменён на " + lang);
-  }
-  // Здесь можно добавить переключение темы (например, светлая/темная) с сохранением в localStorage
+  alert("Открываются настройки (смена языка, темы и т.д.)");
 }
 
-// Функция отображения информации о премиум-функциях
-function showPremium() {
-  alert("Премиум-функции:\n- Полный доступ к ГДЗ и конспектам\n- Авто-решения без ошибок\n- Режим 'с ошибками' с расчетом баллов\n- Выбор учебника\n- Дополнительные возможности оплаты");
+function openPremium() {
+  alert("Премиум-функции: полный доступ к конспектам, ГДЗ и улучшенным ответам.");
 }
 
 // Виджет для быстрого списывания (копирование текста)
 function quickCopy() {
-  let text = document.getElementById("responseContent").innerText;
-  copyToClipboard(text);
-  alert("Текст ответа скопирован в буфер обмена!");
+  let text = document.getElementById("answerText").innerText;
+  navigator.clipboard.writeText(text)
+    .then(() => alert("Ответ скопирован в буфер обмена!"))
+    .catch(err => console.error("Ошибка копирования", err));
 }
 
-// Функция режима с ошибками (использует модуль widgets/mistakes.js)
+// Виджет: режим с ошибками
 function generateMistakes() {
-  let text = document.getElementById("responseContent").innerText;
+  let text = document.getElementById("answerText").innerText;
   let result = addMistakes(text);
   alert("Вариант с ошибками:\n" + result.modifiedText + "\nОценка: " + result.grade + " баллов");
 }
 
-// Функция генерации конспекта (использует модуль premium/books.js)
-function showConsp() {
+// Виджет: генерация конспекта
+function openConsp() {
   let subject = prompt("Введите тему для конспекта:");
   if (!subject) return;
   generateConsp(subject).then(consp => {
