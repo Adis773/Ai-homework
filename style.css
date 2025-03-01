@@ -1,9 +1,10 @@
-/* Базовая стилизация, адаптивный дизайн, тема с градиентным фоном */
+/* Общая базовая стилизация для современного вида */
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #1f1c2c, #928dab);
-  color: #fff;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #283c86, #45a247);
+  color: #333;
 }
 
 /* Стили для регистрационной формы */
@@ -13,20 +14,23 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background: #f4f4f9;
 }
 
 .init-form form {
-  background: rgba(0, 0, 0, 0.6);
+  background: #fff;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 80%;
+  max-width: 400px;
   text-align: left;
 }
 
 .init-form input, .init-form select, .init-form button {
-  display: block;
-  margin: 10px 0;
   width: 100%;
   padding: 10px;
+  margin: 10px 0;
   font-size: 16px;
 }
 
@@ -35,96 +39,81 @@ body {
   display: flex;
   justify-content: flex-end;
   padding: 10px;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .top-bar button {
-  margin-left: 10px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.4);
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: #fff;
+  padding: 8px 12px;
+  margin-left: 10px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 /* Основной интерфейс */
 header {
   text-align: center;
-  padding: 20px;
-}
-
-.input-area {
-  width: 90%;
-  max-width: 600px;
-  background: rgba(0,0,0,0.4);
-  padding: 20px;
-  border-radius: 10px;
-  margin: 0 auto;
-}
-
-.input-area textarea {
-  width: 100%;
-  height: 100px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  resize: none;
-}
-
-.input-area input[type="file"] {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.style-select {
-  margin-top: 10px;
-  text-align: left;
-}
-
-.style-select select {
-  padding: 8px;
-  border-radius: 5px;
-  border: none;
-}
-
-#sendBtn {
-  margin-top: 15px;
-  padding: 12px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #333;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-#sendBtn:hover {
-  background-color: #ddd;
-}
-
-.response-area {
-  margin-top: 20px;
-  width: 90%;
-  max-width: 600px;
-  background: rgba(0,0,0,0.4);
   padding: 15px;
-  border-radius: 10px;
-  text-align: left;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.input-section {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-section input[type="text"] {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.file-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #008CBA;
+  color: #fff;
+  margin-top: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.input-section input[type="file"] {
+  display: none;
+}
+
+.answer-section {
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.answer-section h2 {
+  margin-top: 0;
 }
 
 footer {
-  margin-top: 20px;
-  padding: 10px;
   text-align: center;
+  margin: 20px;
 }
 
 footer button {
-  margin: 5px;
   padding: 10px 15px;
+  margin: 5px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   background: #fff;
-  color: #333;
   cursor: pointer;
 }
