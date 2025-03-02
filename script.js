@@ -84,3 +84,62 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById("summaryBtn").addEventListener("click", () => {
+document.getElementById("photoInput").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const responseSection = document.getElementById("responseSection");
+        const responseText = document.getElementById("responseText");
+        responseSection.style.display = "block";
+        responseText.innerHTML = `<p>Фото загружено, анализируем...</p><img src="${e.target.result}" alt="Загруженное изображение" style="max-width: 100%;">`;
+        setTimeout(() => {
+          responseText.innerHTML += `<p>Мы пока не умеем распознавать текст с фото, но скоро добавим эту функцию!</p>`;
+        }, 2000);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Кнопка "Быстро списать"
+  document.getElementById("copyBtn").addEventListener("click", () => {
+    const responseText = document.getElementById("responseText").textContent;
+    if (!responseText || responseText === "Обработка...") {
+      alert("Нет ответа для копирования!");
+      return;
+    }
+    navigator.clipboard.writeText(responseText).then(() => {
+      alert("Ответ скопирован!");
+    });
+  });
+
+  // Кнопка "Режим с ошибками"
+  document.getElementById("mistakeBtn").addEventListener("click", () => {
+    const responseText = document.getElementById("responseText");
+    if (!responseText.textContent || responseText.textContent === "Обработка...") {
+      alert("Нет ответа для изменения!");
+      return;
+    }
+    responseText.textContent = responseText.textContent.replace(/[аеёиоуыэюя]/gi, (match) => Math.random() > 0.5 ? "*" : match);
+  });
+
+  // Кнопка "Конспект" (создаёт короткое описание ответа)
+  document.getElementById("summaryBtn").addEventListener("click", () => {
+    const responseText = document.getElementById("responseText").textContent;
+    if (!responseText || responseText === "Обработка...") {
+      alert("Нет ответа для конспекта!");
+      return;
+    }
+    alert("Краткий конспект: " + responseText.slice(0, 50) + "...");
+  });
+
+  // Настройки (будет позже)
+  document.getElementById("settingsBtn").addEventListener("click", () => {
+    alert("Скоро здесь появятся настройки!");
+  });
+
+  // Премиум (заглушка)
+  document.getElementById("premiumBtn").addEventListener("click", () => {
+    alert("Премиум-версия пока не доступна.");
+  });
+});
