@@ -1,10 +1,7 @@
 {
-  "name": "AI Homework",
-  "short_name": "AI-HW",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#4a90e2",
+  "name": "Помощник по ДЗ",
+  "short_name": "ДЗ Помощник",
+  "description": "Приложение для помощи с домашним заданием",
   "icons": [
     {
       "src": "assets/icon.png",
@@ -16,5 +13,9 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "start_url": "index.html",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "display": "standalone"
 }
