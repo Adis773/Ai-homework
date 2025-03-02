@@ -1,53 +1,86 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const registerModal = document.getElementById("register-modal");
-    const startBtn = document.getElementById("start-btn");
-    const nameInput = document.getElementById("name");
-    const classInput = document.getElementById("class");
-    const countryInput = document.getElementById("country");
-    const taskInput = document.getElementById("task-input");
-    const sendBtn = document.getElementById("send-btn");
-    const answerContainer = document.getElementById("answer-container");
+  // Регистрация пользователя
+  const initModal = document.getElementById("initModal");
+  const startBtn = document.getElementById("startBtn");
+  const userNameInput = document.getElementById("userName");
+  const userClassInput = document.getElementById("userClass");
+  const userCountryInput = document.getElementById("userCountry");
 
-    if (!localStorage.getItem("userName")) {
-        registerModal.style.display = "block";
+  // Если данные уже сохранены – пропускаем регистрацию
+  if (localStorage.getItem("userName") && localStorage.getItem("userClass") && localStorage.getItem("userCountry")) {
+    initModal.style.display = "none";
+    document.getElementById("mainInterface").style.display = "block";
+    document.getElementById("userDisplayName").textContent = localStorage.getItem("userName");
+  }
+
+  startBtn.addEventListener("click", () => {
+    const name = userNameInput.value.trim();
+    const userClass = userClassInput.value;
+    const country = userCountryInput.value;
+    if (!name || !userClass || !country) {
+      alert("Заполните все поля!");
+      return;
     }
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userClass", userClass);
+    localStorage.setItem("userCountry", country);
+    document.getElementById("userDisplayName").textContent = name;
+    initModal.style.display = "none";
+    document.getElementById("mainInterface").style.display = "block";
+  });
 
-    startBtn.addEventListener("click", () => {
-        if (nameInput.value && classInput.value && countryInput.value) {
-            localStorage.setItem("userName", nameInput.value);
-            localStorage.setItem("userClass", classInput.value);
-            localStorage.setItem("userCountry", countryInput.value);
-            registerModal.style.display = "none";
-        } else {
-            alert("Заполните все поля!");
-        }
-    });
+  // Обработка кнопки "Отправить"
+  const sendBtn = document.getElementById("sendBtn");
+  sendBtn.addEventListener("click", () => {
+    const taskInput = document.getElementById("taskInput").value.trim();
+    if (!taskInput) {
+      alert("Введите задание!");
+      return;
+    }
+    const responseSection = document.getElementById("responseSection");
+    const responseText = document.getElementById("responseText");
+    responseSection.style.display = "block";
+    responseText.textContent = "Обработка...";
+    // Здесь можно вставить вызов реального API (например, ChatGPT)
+    setTimeout(() => {
+      responseText.textContent = "Ответ: " + taskInput.split("").reverse().join("");
+    }, 1000);
+  });
 
-    sendBtn.addEventListener("click", () => {
-        if (taskInput.value.trim() === "") {
-            alert("Введите задание!");
-            return;
-        }
+  // Обработка кнопки "Камера" (запускает файловый ввод)
+  const cameraBtn = document.querySelector(".camera-btn");
+  cameraBtn.addEventListener("click", () => {
+    document.getElementById("photoInput").click();
+  });
 
-        answerContainer.classList.remove("hidden");
-        answerContainer.innerHTML = `<p><strong>Ответ:</strong> ${taskInput.value} (примерный ответ)</p>`;
-    });
+  // Обработка загрузки фото
+  document.getElementById("photoInput").addEventListener("change", () => {
+    const responseSection = document.getElementById("responseSection");
+    const responseText = document.getElementById("responseText");
+    if (document.getElementById("photoInput").files.length > 0) {
+      responseSection.style.display = "block";
+      responseText.textContent = "Фото загружено, обработка...";
+      // Здесь можно вызвать OCR API – для демо используем задержку
+      setTimeout(() => {
+        responseText.textContent = "Ответ: (ИИ анализирует фото и формирует ответ)";
+      }, 2000);
+    }
+  });
 
-    document.getElementById("copy-btn").addEventListener("click", () => {
-        navigator.clipboard.writeText(answerContainer.innerText).then(() => {
-            alert("Ответ скопирован!");
-        });
-    });
+  // Функции футера
+  document.getElementById("copyBtn").addEventListener("click", () => {
+    const text = document.getElementById("responseText").textContent;
+    navigator.clipboard.writeText(text)
+      .then(() => alert("Ответ скопирован!"))
+      .catch(err => console.error("Ошибка копирования", err));
+  });
 
-    document.getElementById("mistake-btn").addEventListener("click", () => {
-        if (!answerContainer.classList.contains("hidden")) {
-            answerContainer.innerHTML += `<p><strong>Версия с ошибками:</strong> ${taskInput.value.split("").reverse().join("")}</p>`;
-        }
-    });
+  document.getElementById("mistakeBtn").addEventListener("click", () => {
+    const text = document.getElementById("responseText").textContent;
+    const index = Math.floor(Math.random() * text.length);
+    const wrongChar = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+    const modifiedText = text.substring(0, index) + wrongChar + text.substring(index + 1);
+    alert("Вариант с ошибками:\n" + modifiedText + "\nОценка: 80 баллов");
+  });
 
-    document.getElementById("summary-btn").addEventListener("click", () => {
-        if (!answerContainer.classList.contains("hidden")) {
-            answerContainer.innerHTML += `<p><strong>Краткий конспект:</strong> Основная идея задания - ...</p>`;
-        }
-    });
-});
+  document.getElementById("summaryBtn").addEventListener("click", () => {
