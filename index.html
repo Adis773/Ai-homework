@@ -1,71 +1,82 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Помощник по ДЗ</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- CSP для базовой защиты -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+  <title>Помощник по ДЗ</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-
-    <!-- Верхняя панель -->
-    <header>
-        <h1>Помощник по ДЗ</h1>
-        <div class="top-buttons">
-            <button id="settings-btn">⚙ Настройки</button>
-            <button id="premium-btn">💎 Премиум</button>
-        </div>
-    </header>
-
-    <!-- Регистрация -->
-    <div id="register-modal" class="modal">
-        <div class="modal-content">
-            <h2>Введите данные</h2>
-            <input type="text" id="name" placeholder="Ваше имя">
-            <select id="class">
-                <option value="" disabled selected>Выберите класс</option>
-                <option value="1">1 класс</option>
-                <option value="2">2 класс</option>
-                <option value="3">3 класс</option>
-                <option value="4">4 класс</option>
-                <option value="5">5 класс</option>
-                <option value="6">6 класс</option>
-                <option value="7">7 класс</option>
-                <option value="8">8 класс</option>
-                <option value="9">9 класс</option>
-                <option value="10">10 класс</option>
-                <option value="11">11 класс</option>
-                <option value="12">12 класс</option>
-            </select>
-            <select id="country">
-                <option value="" disabled selected>Выберите страну</option>
-                <option value="Казахстан">Казахстан</option>
-                <option value="Россия">Россия</option>
-                <option value="Беларусь">Беларусь</option>
-                <option value="Украина">Украина</option>
-            </select>
-            <button id="start-btn">Начать</button>
-        </div>
+  <!-- Модальное окно регистрации -->
+  <div id="initModal" class="modal">
+    <div class="modal-content">
+      <h2>Добро пожаловать!</h2>
+      <input type="text" id="userName" placeholder="Ваше имя" required>
+      <select id="userClass" required>
+        <option value="">Выберите класс</option>
+        <option value="1">1 класс</option>
+        <option value="2">2 класс</option>
+        <option value="3">3 класс</option>
+        <option value="4">4 класс</option>
+        <option value="5">5 класс</option>
+        <option value="6">6 класс</option>
+        <option value="7">7 класс</option>
+        <option value="8">8 класс</option>
+        <option value="9">9 класс</option>
+        <option value="10">10 класс</option>
+        <option value="11">11 класс</option>
+        <option value="12">12 класс</option>
+      </select>
+      <select id="userCountry" required>
+        <option value="">Выберите страну</option>
+        <option value="ru">Россия</option>
+        <option value="kz">Казахстан</option>
+        <option value="by">Беларусь</option>
+        <option value="ua">Украина</option>
+      </select>
+      <button id="startBtn">Начать</button>
     </div>
+  </div>
 
-    <!-- Основной интерфейс -->
+  <!-- Основной интерфейс (отображается после регистрации) -->
+  <div id="mainInterface" class="main-interface" style="display: none;">
+    <header>
+      <div class="header-top">
+        <button id="settingsBtn" class="icon-btn">⚙</button>
+        <button id="premiumBtn" class="icon-btn">💎</button>
+      </div>
+      <h1>Помощник по ДЗ</h1>
+      <p>Здравствуйте, <span id="userDisplayName"></span>! Получите помощь по домашнему заданию.</p>
+    </header>
+    
     <main>
-        <textarea id="task-input" placeholder="Введите задание"></textarea>
-        <div class="buttons">
-            <button id="camera-btn">📸 Камера</button>
-            <input type="file" id="file-input" accept="image/*">
-            <button id="send-btn">Отправить</button>
-        </div>
-        <div id="answer-container" class="hidden"></div>
+      <div class="input-container">
+        <!-- Поле ввода задания -->
+        <input type="text" id="taskInput" placeholder="Введите задание..." autocomplete="off">
+        <!-- Кнопка для фото (запускает как камеру, так и выбор из галереи) -->
+        <label for="photoInput" class="camera-btn">📸 Камера</label>
+        <input type="file" id="photoInput" accept="image/*" capture="environment">
+        <!-- Кнопка отправки запроса -->
+        <button id="sendBtn">Отправить</button>
+      </div>
+      <!-- Секция ответа (скрыта, пока не отправлено задание) -->
+      <div id="responseSection" class="response-section" style="display: none;">
+        <h2>Ответ:</h2>
+        <div id="responseText"></div>
+      </div>
     </main>
-
-    <!-- Футер -->
+    
     <footer>
-        <button id="copy-btn">⚡ Быстро списать</button>
-        <button id="mistake-btn">🎭 Режим с ошибками</button>
-        <button id="summary-btn">📝 Конспект</button>
+      <button id="copyBtn" class="footer-btn">⚡ Быстро списать</button>
+      <button id="mistakeBtn" class="footer-btn">🎭 Режим с ошибками</button>
+      <button id="summaryBtn" class="footer-btn">📝 Конспект</button>
     </footer>
-
-    <script src="script.js"></script>
+  </div>
+  
+  <script src="config.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
